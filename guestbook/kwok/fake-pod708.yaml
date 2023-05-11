@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fake-pod
+  name: fake-pod708
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fake-pod
+      app: fake-pod708
   template:
     metadata:
       labels:
-        app: fake-pod
+        app: fake-pod708
     spec:
       affinity:
         nodeAffinity:
