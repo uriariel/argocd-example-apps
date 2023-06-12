@@ -17,9 +17,6 @@ spec:
       - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
         name: guestbook-ui
         resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
           requests:
             cpu: 50m
             memory: 256Mi
