@@ -9,6 +9,10 @@ image:
   tag: 0.1
   pullPolicy: IfNotPresent
 
+deployment_requests:
+  cpu: 50m
+  memory: 256Mi
+
 service:
   type: ClusterIP
   port: 80
@@ -43,3 +47,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilization: 80
