@@ -9,10 +9,6 @@ image:
   tag: 0.1
   pullPolicy: IfNotPresent
 
-deployment_requests:
-  cpu: 50m
-  memory: 256Mi
-
 service:
   type: ClusterIP
   port: 80
@@ -39,7 +35,7 @@ resources:
   #  cpu: 100m
   #  memory: 128Mi
   requests:
-   cpu: 60m
+   cpu: 50m
    memory: 256Mi
 
 nodeSelector: {}
