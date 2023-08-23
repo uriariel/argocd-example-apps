@@ -79,9 +79,9 @@ requests: # The CPU Request
 autoscaling:
   enabled: true
   minReplicas_v1: 1
-  maxReplicas_v1: 1000
+  maxReplicas_v1: 3
   minReplicas_v2: 1
-  maxReplicas_v2: 600
+  maxReplicas_v2: 3
   targetCPUUtilizationPercentage: 20 
   #targetMemoryUtilizationPercentage: 80
 nodeSelector: {}
