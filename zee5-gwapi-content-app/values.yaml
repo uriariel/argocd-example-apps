@@ -15,15 +15,13 @@ egress:
 ingress:    
   name: zee5-gwapi-content
 image:
-  repository: ghcr.io/zee-5/zee5-gwapi-content #Provide the rapo name
+  repository: nginx #Provide the rapo name
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag1: pt-20230801.1740
-  tag2: pt-20230801.1740
+  tag1: latest
+  tag2: latest
 
-  
-imagePullSecrets:
-  - name: "git-creds"
+
 nameOverride: ""
 fullnameOverride: ""
 serviceAccount:
@@ -92,29 +90,6 @@ affinity: {}
 prob: content #the context path of the application
 port: 3000 #the port number of the application
 apiname: zee5-gwapi-content #provide the apiname e.g zee5-order then provide order
-NODE_ENV: "pt"
-SOLR_HOST : "pt-solr-coll-query-v3-elb-c37b8fcb0fa587b1.elb.ap-south-1.amazonaws.com"
-SOLR_PORT : "8983"
-SOLR_CORE : "zee5_main_collection"
-SOLR_PROTOCOL : "http"
-SOLR_TIMEOUT : "2000"
 
-MONGO_HOST : "52.66.139.72"
-MONGO_PORT : "27017"
-
-REDIS_HOST : "clustercfg.zee5-pt-singleplayback-solrprd.afbzjj.aps1.cache.amazonaws.com"
-GWAPI_REDIS_HOST : "clustercfg.zee5-pt-gwapi1.afbzjj.aps1.cache.amazonaws.com"
-REDIS_PORT : 6379
-ASSET_PREFIX : "asset_"
-TTL : 18000
-NON_EXISTING_KEY_TTL : 3600
-
-MongoDBHost : "10.182.2.223"
-MongoDBPort : "27017"
-#NOTE:
-NEW_RELIC_APP_NAME: "pt-zee5-k8s-gwapi-content"
-NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
-NEW_RELIC_LICENSE_KEY: "98d5e310ef45e340250e4bf9da95773b0bdbNRAL"
-NEW_RELIC_ENV_NAME: "PT"
 #Incase there is a service to call follow this formate  to define the URL
 #<servicename>.<namespace>.svc.cluster.local:<portnumber>
