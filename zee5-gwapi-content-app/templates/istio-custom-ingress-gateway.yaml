@@ -15,9 +15,6 @@ spec:
         k8s:
            service:
               type: NodePort
-           nodeSelector:
-              intent: apps-default
-              karpenter.sh/provisioner-name: default
            hpaSpec:
                 maxReplicas: 300
                 minReplicas: 1

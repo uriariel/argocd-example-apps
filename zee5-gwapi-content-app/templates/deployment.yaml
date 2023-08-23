@@ -25,14 +25,7 @@ spec:
         {{- include "zee5.selectorLabels" . | nindent 8 }}
         app: {{ .Values.app }}
         version: {{ .Values.version }}
-    spec:
-      nodeSelector:
-         intent: apps-default #apps-compute
          #karpenter.sh/provisioner-name: default #compute
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
 #       affinity:
 #         podAntiAffinity:
 #           preferredDuringSchedulingIgnoredDuringExecution:
@@ -50,11 +43,6 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Values.containername }}
-          envFrom:
-            - configMapRef:
-                  name: {{ include "zee5.fullname" . }}-config
-            - secretRef:
-                   name: zee5-gwapi-content-pt-zee5-secrets
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag1 }}
@@ -130,14 +118,7 @@ spec:
         {{- include "zee5.selectorLabels" . | nindent 8 }}
         app: {{ .Values.app }}
         version: {{ .Values.version2 }}
-    spec:
-      nodeSelector:
-         intent: apps-default #apps-compute
          #karpenter.sh/provisioner-name: default #compute
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
 #       affinity:
 #         podAntiAffinity:
 #           preferredDuringSchedulingIgnoredDuringExecution:
