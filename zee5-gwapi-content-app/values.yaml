@@ -87,8 +87,8 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
-prob: content #the context path of the application
-port: 3000 #the port number of the application
+prob: / #the context path of the application
+port: 80 #the port number of the application
 apiname: zee5-gwapi-content #provide the apiname e.g zee5-order then provide order
 
 #Incase there is a service to call follow this formate  to define the URL
