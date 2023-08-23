@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.name
+    value: ghcr.io/zee-5/zee5-gwapi-content-zee5-gwapi-content
+    forcestring: true
+  - name: image.tag
+    value: "20220617.1548"
+    forcestring: true

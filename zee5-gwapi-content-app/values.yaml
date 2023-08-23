@@ -1,0 +1,120 @@
+# Default values for ko.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+namespace: middleware-pt
+version: v1
+version2: v2
+weight1: 20
+weight2: 80
+containername: zee5-gwapi-content
+app: zee5-gwapi-content
+egress:
+  name: zee5-gwapi-content
+ingress:    
+  name: zee5-gwapi-content
+image:
+  repository: ghcr.io/zee-5/zee5-gwapi-content #Provide the rapo name
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag1: pt-20230801.1740
+  tag2: pt-20230801.1740
+
+  
+imagePullSecrets:
+  - name: "git-creds"
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+# ingress:
+#   enabled: true
+  #className: ""
+  #annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  #hosts:
+  #  - host: chart-example.local
+  #   paths:
+  #      - path: /
+   #       pathType: ImplementationSpecific
+  #tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+#resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+limits: #The CPU limit
+    cpu: 1600m
+    memory: 3600Mi
+requests: # The CPU Request
+    cpu: 800m
+    memory: 2000Mi
+  
+# Pod Gracefuil Period Before Shitdown
+#terminationGracePeriodSeconds: 65
+autoscaling:
+  enabled: true
+  minReplicas_v1: 1
+  maxReplicas_v1: 1000
+  minReplicas_v2: 1
+  maxReplicas_v2: 600
+  targetCPUUtilizationPercentage: 20 
+  #targetMemoryUtilizationPercentage: 80
+nodeSelector: {}
+tolerations: []
+affinity: {}
+prob: content #the context path of the application
+port: 3000 #the port number of the application
+apiname: zee5-gwapi-content #provide the apiname e.g zee5-order then provide order
+NODE_ENV: "pt"
+SOLR_HOST : "pt-solr-coll-query-v3-elb-c37b8fcb0fa587b1.elb.ap-south-1.amazonaws.com"
+SOLR_PORT : "8983"
+SOLR_CORE : "zee5_main_collection"
+SOLR_PROTOCOL : "http"
+SOLR_TIMEOUT : "2000"
+
+MONGO_HOST : "52.66.139.72"
+MONGO_PORT : "27017"
+
+REDIS_HOST : "clustercfg.zee5-pt-singleplayback-solrprd.afbzjj.aps1.cache.amazonaws.com"
+GWAPI_REDIS_HOST : "clustercfg.zee5-pt-gwapi1.afbzjj.aps1.cache.amazonaws.com"
+REDIS_PORT : 6379
+ASSET_PREFIX : "asset_"
+TTL : 18000
+NON_EXISTING_KEY_TTL : 3600
+
+MongoDBHost : "10.182.2.223"
+MongoDBPort : "27017"
+#NOTE:
+NEW_RELIC_APP_NAME: "pt-zee5-k8s-gwapi-content"
+NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
+NEW_RELIC_LICENSE_KEY: "98d5e310ef45e340250e4bf9da95773b0bdbNRAL"
+NEW_RELIC_ENV_NAME: "PT"
+#Incase there is a service to call follow this formate  to define the URL
+#<servicename>.<namespace>.svc.cluster.local:<portnumber>

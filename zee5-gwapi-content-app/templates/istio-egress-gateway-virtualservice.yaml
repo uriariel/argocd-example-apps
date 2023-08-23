@@ -1,0 +1,58 @@
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Gateway
+# metadata:
+#   name: {{ .Values.egress.name }}-egress-gw
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   selector:
+#     istio: {{ .Values.namespace }}-internal-egressgateway
+#   servers:
+#   - port:
+#       number: 80
+#       name: http
+#       protocol: HTTP
+#     hosts:
+#     - "zee5-payments-qc.cluster-ct3q6ht1sfbl.ap-south-1.docdb.amazonaws.com"
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: DestinationRule
+# metadata:
+#   name: {{ .Values.egress.name }}-destination
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   host: {{ .Values.namespace }}-egress-gateway.{{ .Values.namespace }}.svc.cluster.local
+#   subsets:
+#   - name: documentdb-se
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: {{ .Values.egress.name }}-egress-vs
+# spec:
+#   hosts:
+#   - documentdb-se
+#   gateways:
+#   - {{ .Values.namespace }}/{{ .Values.egress.name }}-egress-gw
+#   - mesh
+#   http:
+#   - match:
+#     - gateways:
+#       - mesh
+#       port: 80
+#     route:
+#     - destination:
+#         host: {{ .Values.namespace }}-egress-gateway.{{ .Values.namespace }}.svc.cluster.local
+#         subset: documentdb-se
+#         port:
+#           number: 80
+#       weight: 100
+#   - match:
+#     - gateways:
+#       - {{ .Values.egress.name }}-egress-gw
+#       port: 80
+#     route:
+#     - destination:
+#         host: zee5-payments-qc.cluster-ct3q6ht1sfbl.ap-south-1.docdb.amazonaws.com
+#         port:
+#           number: 27017
+#       weight: 100

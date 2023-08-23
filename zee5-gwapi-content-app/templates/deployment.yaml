@@ -1,0 +1,211 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zee5.fullname" . }}-{{ .Values.version }}
+  labels:
+    {{- include "zee5.labels" . | nindent 4 }}
+    app: {{ .Values.app }}
+    version: {{ .Values.version }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "zee5.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.app }}
+      version: {{ .Values.version }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "zee5.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.app }}
+        version: {{ .Values.version }}
+    spec:
+      nodeSelector:
+         intent: apps-default #apps-compute
+         #karpenter.sh/provisioner-name: default #compute
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+#       affinity:
+#         podAntiAffinity:
+#           preferredDuringSchedulingIgnoredDuringExecution:
+#           - weight: 100
+#             podAffinityTerm:
+#               labelSelector:
+#                 matchExpressions:
+#                 - key: app.kubernetes.io/name
+#                   operator: In
+#                   values:
+#                   - {{ include "zee5.name" . }}
+#               topologyKey: topology.kubernetes.io/zone
+      serviceAccountName: {{ include "zee5.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.containername }}
+          envFrom:
+            - configMapRef:
+                  name: {{ include "zee5.fullname" . }}-config
+            - secretRef:
+                   name: zee5-gwapi-content-pt-zee5-secrets
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag1 }}
+#           env:
+#             - name: DEPLOYED_ENV
+#               value: dev  
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              path:  {{ .Values.prob }}
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              path: {{ .Values.prob }}
+              port: http
+          startupProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              scheme: HTTP
+              port: http
+              path: {{ .Values.prob }}
+          resources:
+            limits:
+              cpu: {{ .Values.limits.cpu | default "1000m"  }}
+              memory: {{ .Values.limits.memory | default "1000Mi"  }}
+              #memory: 2096Mi
+              #ephemeral-storage: "2Gi"
+            requests:
+              cpu:  {{ .Values.requests.cpu | default "1000m"  }}
+              memory:  {{ .Values.requests.memory | default "1000Mi"  }}
+              #memory: 2096Mi
+              #ephemeral-storage: "2Gi"     
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zee5.fullname" . }}-{{ .Values.version2 }}
+  labels:
+    {{- include "zee5.labels" . | nindent 4 }}
+    app: {{ .Values.app }}
+    version: {{ .Values.version2 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "zee5.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.app }}
+      version: {{ .Values.version2 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "zee5.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.app }}
+        version: {{ .Values.version2 }}
+    spec:
+      nodeSelector:
+         intent: apps-default #apps-compute
+         #karpenter.sh/provisioner-name: default #compute
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+#       affinity:
+#         podAntiAffinity:
+#           preferredDuringSchedulingIgnoredDuringExecution:
+#           - weight: 100
+#             podAffinityTerm:
+#               labelSelector:
+#                 matchExpressions:
+#                 - key: app.kubernetes.io/name
+#                   operator: In
+#                   values:
+#                   - {{ include "zee5.name" . }}
+#               topologyKey: topology.kubernetes.io/zone
+      serviceAccountName: {{ include "zee5.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.containername }}
+          envFrom:
+            - configMapRef:
+                  name: {{ include "zee5.fullname" . }}-config
+            - secretRef:
+                   name: zee5-gwapi-content-pt-zee5-secrets
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag2 }}
+#           env:
+#             - name: DEPLOYED_ENV
+#               value: dev  
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              path:  {{ .Values.prob }}
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              path: {{ .Values.prob }}
+              port: http
+          startupProbe:
+            initialDelaySeconds: 180
+            httpGet:
+              scheme: HTTP
+              port: http
+              path: {{ .Values.prob }}
+          resources:
+            limits:
+              cpu: {{ .Values.limits.cpu | default "1000m"  }}
+              memory: {{ .Values.limits.memory | default "1000Mi"  }}
+              #memory: 2096Mi
+              #ephemeral-storage: "2Gi"
+            requests:
+              cpu:  {{ .Values.requests.cpu | default "1000m"  }}
+              memory:  {{ .Values.requests.memory | default "1000Mi"  }}
+              #memory: 2096Mi
+              #ephemeral-storage: "2Gi"     
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      
+
