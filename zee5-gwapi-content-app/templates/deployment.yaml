@@ -25,6 +25,7 @@ spec:
         {{- include "zee5.selectorLabels" . | nindent 8 }}
         app: {{ .Values.app }}
         version: {{ .Values.version }}
+    spec:
          #karpenter.sh/provisioner-name: default #compute
 #       affinity:
 #         podAntiAffinity:
@@ -118,6 +119,7 @@ spec:
         {{- include "zee5.selectorLabels" . | nindent 8 }}
         app: {{ .Values.app }}
         version: {{ .Values.version2 }}
+    spec:
          #karpenter.sh/provisioner-name: default #compute
 #       affinity:
 #         podAntiAffinity:
