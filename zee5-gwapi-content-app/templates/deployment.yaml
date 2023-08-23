@@ -138,11 +138,6 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Values.containername }}
-          envFrom:
-            - configMapRef:
-                  name: {{ include "zee5.fullname" . }}-config
-            - secretRef:
-                   name: zee5-gwapi-content-pt-zee5-secrets
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag2 }}
