@@ -68,11 +68,11 @@ service:
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
 limits: #The CPU limit
-    cpu: 1600m
-    memory: 3600Mi
+    cpu: 400m
+    memory: 300Mi
 requests: # The CPU Request
-    cpu: 800m
-    memory: 2000Mi
+    cpu: 100m
+    memory: 200Mi
   
 # Pod Gracefuil Period Before Shitdown
 #terminationGracePeriodSeconds: 65
