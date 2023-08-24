@@ -5,7 +5,6 @@ metadata:
   labels:
     app: stress-maker
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: stress-maker
