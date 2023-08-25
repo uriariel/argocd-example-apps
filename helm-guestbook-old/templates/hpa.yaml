@@ -13,11 +13,5 @@ spec:
     name: helm-guestbook
   minReplicas: {{ .Values.hpa.minReplicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          averageUtilization: {{ .Values.hpa.targetCPUUtilization }}
-          type: Utilization
+  targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilization }}
 
