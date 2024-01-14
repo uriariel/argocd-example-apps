@@ -50,3 +50,9 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+        - name: memory-stress-ctr
+          command: ["stress"]
+          args: ["-v", "--vm", "1", "--vm-bytes", "100M", "--vm-hang", "4"]
+          image: polinux/stress
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
